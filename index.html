@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mablデモページ</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 50%;
+        }
+        @media (max-width: 600px) {
+            body {
+                background-color: #f9f9f9;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>mablデモページ</h2>
+
+    <!-- テキストボックス -->
+    <label for="textInput">テキスト入力:</label>
+    <input type="text" id="textInput">
+
+    <!-- ドロップダウンリスト -->
+    <label for="dropdown">選択:</label>
+    <select id="dropdown">
+        <option value="option1">オプション1</option>
+        <option value="option2">オプション2</option>
+        <option value="option3">オプション3</option>
+    </select>
+
+    <!-- チェックボックス -->
+    <label for="checkbox">チェックボックス:</label>
+    <input type="checkbox" id="checkbox">
+
+    <!-- ラジオボタン -->
+    <div>
+        <label for="radio1">ラジオ1:</label>
+        <input type="radio" name="radioGroup" id="radio1" value="radio1">
+        <label for="radio2">ラジオ2:</label>
+        <input type="radio" name="radioGroup" id="radio2" value="radio2">
+    </div>
+
+    <!-- データ表示ボタン -->
+    <button id="displayDataBtn">データを表示</button>
+
+    <!-- 結果を表示するエリア -->
+    <div id="resultDisplayArea" style="border: 1px solid #ccc; margin-top: 20px; padding: 10px;"></div>
+
+    <!-- モーダルウィンドウ -->
+    <button id="showModalBtn">モーダルを表示</button>
+    <div class="modal" id="sampleModal">
+        <div class="modal-content">
+            <span id="closeModalBtn">&times;</span>
+            <p>モーダルのコンテンツです。</p>
+        </div>
+    </div>
+
+    <!-- Ajaxの非同期操作 -->
+    <button id="fetchDataBtn">データを取得</button>
+    <div id="dataDisplayArea"></div>
+
+    <!-- フォームとバリデーション -->
+    <form id="sampleForm">
+        <label for="emailInput">Email:</label>
+        <input type="email" id="emailInput">
+        <span id="emailErrorMsg" style="color:red;"></span>
+        <button type="submit">送信</button>
+    </form>
+
+    <!-- ページ内ナビゲーション -->
+    <a href="#sectionTarget">セクションターゲットへ</a>
+    <div style="height: 3000px;"></div>
+    <div id="sectionTarget">セクションターゲット</div>
+
+</div>
+
+<script>
+    // データ表示機能
+    document.getElementById('displayDataBtn').addEventListener('click', function() {
+        const textInput = document.getElementById('textInput').value;
+        const dropdownValue = document.getElementById('dropdown').value;
+        const isChecked = document.getElementById('checkbox').checked;
+        const radios = document.getElementsByName('radioGroup');
+        let selectedRadio;
+        for (let radio of radios) {
+            if (radio.checked) {
+                selectedRadio = radio.value;
+                break;
+            }
+        }
+        const result = `
+            テキスト入力: ${textInput}<br>
+            選択: ${dropdownValue}<br>
+            チェックボックス: ${isChecked ? 'チェックあり' : 'チェックなし'}<br>
+            ラジオボタン: ${selectedRadio}
+        `;
+        document.getElementById('resultDisplayArea').innerHTML = result;
+    });
+
+    // モーダルの操作
+    document.getElementById('showModalBtn').addEventListener('click', function() {
+        document.getElementById('sampleModal').style.display = 'block';
+    });
+    document.getElementById('closeModalBtn').addEventListener('click', function() {
+        document.getElementById('sampleModal').style.display = 'none';
+    });
+
+    // Ajaxの非同期操作
+    document.getElementById('fetchDataBtn').addEventListener('click', function() {
+        setTimeout(() => {
+            document.getElementById('dataDisplayArea').textContent = '非同期で取得したデータ: Hello mabl!';
+        }, 1000);
+    });
+
+    // フォームとバリデーション
+    document.getElementById('sampleForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const email = document.getElementById('emailInput').value;
+        if (!email.includes('@')) {
+            document.getElementById('emailErrorMsg').textContent = '有効なメールアドレスを入力してください。';
+        } else {
+            document.getElementById('emailErrorMsg').textContent = '';
+            alert('送信されました！');
+        }
+    });
+</script>
+
+</body>
+</html>
